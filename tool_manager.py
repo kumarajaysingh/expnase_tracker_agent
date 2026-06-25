@@ -46,6 +46,22 @@ def get_spending_summary(category: str = "", start_date: str = "", end_date: str
         return f"status_code={response.status_code} body={response.text}"
     except requests.RequestException as exc:
         return f"error calling get_spending_summary tool: {exc}"
+    
+
+def check_budget_status(category: str = "") -> dict:
+    params = {}
+    if category:
+        params["category"] = category
+
+    try:
+        response = requests.get(
+            f"{EXPENSE_API_BASE_URL}/api/budget/info",
+            params=params,
+            timeout=REQUEST_TIMEOUT_SECONDS,
+        )
+        return f"status_code={response.status_code} body={response}"
+    except requests.RequestException as exc:
+        return f"error calling get_spending_summary tool: {exc}"
 
 
 TOOL_SCHEMAS = [
@@ -103,9 +119,28 @@ TOOL_SCHEMAS = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "check_budget_status",
+            "description": "Get a status of Budget, filtered by category.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "type": "string",
+                        "description": "Required category to filter the summary by.",
+                    },
+                   
+                },
+                "required": ["category",],
+            },
+        },
+    },
 ]
 
 TOOL_REGISTRY = {
     "log_expense": log_expense,
     "get_spending_summary": get_spending_summary,
+    "check_budget_status": check_budget_status
 }
