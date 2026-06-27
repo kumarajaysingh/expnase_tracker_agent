@@ -59,7 +59,7 @@ def check_budget_status(category: str = "") -> dict:
             params=params,
             timeout=REQUEST_TIMEOUT_SECONDS,
         )
-        return f"status_code={response.status_code} body={response}"
+        return f"status_code={response.status_code} body={response.text}"
     except requests.RequestException as exc:
         return f"error calling get_spending_summary tool: {exc}"
 

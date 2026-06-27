@@ -1,4 +1,4 @@
-from tool_manager import TOOL_REGISTRY
+from mcp_tools.tool_manager import TOOL_REGISTRY
 
 
 class Expense_Summary_Agent:

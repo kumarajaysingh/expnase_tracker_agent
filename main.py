@@ -26,7 +26,7 @@ class ChatResponse(BaseModel):
 def chat(request: ChatRequest) -> ChatResponse:
     plan = execution_planner_agent.plan(request.query)
 
-    if plan["tool_name"] is None:
+    if not plan["tool_name"]:
         answer = direct_res_gen_agent.generate(request.query)
     else:
         result = orchestrator_agent.handle(plan)
